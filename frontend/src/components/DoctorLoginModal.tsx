@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Activity, ShieldCheck, Lock, User, X, Eye, EyeOff, Loader2, AlertTriangle } from "lucide-react";
+import { getApiUrl } from "@/config/api";
 
 interface DoctorLoginModalProps {
   isOpen: boolean;
@@ -35,7 +36,7 @@ export default function DoctorLoginModal({
     setIsSigningIn(true);
 
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch(getApiUrl("/auth/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username: trimmedUser, password }),

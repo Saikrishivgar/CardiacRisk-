@@ -14,6 +14,7 @@ import {
   Heart,
   Sparkles,
 } from "lucide-react";
+import { getApiUrl } from "@/config/api";
 
 interface DoctorPortalScreenProps {
   onLoginSuccess: (doctorName: string) => void;
@@ -118,7 +119,7 @@ export default function DoctorPortalScreen({ onLoginSuccess }: DoctorPortalScree
     setIsLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
+      const response = await fetch(getApiUrl("/auth/login"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,7 +144,7 @@ export default function DoctorPortalScreen({ onLoginSuccess }: DoctorPortalScree
       const doctorDisplayName = data?.user?.name || `Dr. ${trimmedUser}`;
       triggerTransition(doctorDisplayName);
     } catch {
-      setErrorMessage("Unable to connect to authentication service. Ensure the backend is running on port 8000.");
+      setErrorMessage("Unable to connect to authentication service. Please verify that the backend is running and reachable.");
       setIsLoading(false);
     }
   };

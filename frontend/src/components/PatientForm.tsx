@@ -33,6 +33,7 @@ import {
   type FieldSpec,
 } from "@/config/patientSchema";
 import ReportAnalyzer, { type ExtractionResult } from "./ReportAnalyzer";
+import { getApiUrl } from "@/config/api";
 import {
   buildModelPayload,
   createEmptyPatient,
@@ -314,7 +315,7 @@ export default function PatientForm({ onClose, onPredictionSuccess }: PatientFor
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8000/predict", {
+      const response = await fetch(getApiUrl("/predict"), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

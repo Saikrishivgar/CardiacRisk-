@@ -3,6 +3,7 @@
 import React, { useState, useRef } from "react";
 import { FileText, X, File as FileIcon, Loader2, Upload, Cpu } from "lucide-react";
 import type { ModelColumn } from "@/types/patient";
+import { getApiUrl } from "@/config/api";
 
 export interface ExtractionResult {
   extracted_features: Record<string, { value: any, status: string, source_text: string }>;
@@ -42,7 +43,7 @@ export default function ReportAnalyzer({ onExtractionComplete }: ReportAnalyzerP
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:8000/extract-text", {
+      const response = await fetch(getApiUrl("/extract-text"), {
         method: "POST",
         body: formData,
       });
@@ -68,7 +69,7 @@ export default function ReportAnalyzer({ onExtractionComplete }: ReportAnalyzerP
     setExtractingData(true);
     setError(null);
     try {
-      const response = await fetch("http://localhost:8000/extract-clinical-data", {
+      const response = await fetch(getApiUrl("/extract-clinical-data"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: extractedText }),

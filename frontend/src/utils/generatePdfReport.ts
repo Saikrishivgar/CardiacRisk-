@@ -5,6 +5,7 @@
  */
 
 import type { PredictionResponse } from "@/types/patient";
+import { getApiUrl } from "@/config/api";
 
 export interface GeneratePdfParams {
   features: Record<string, string | number>;
@@ -66,7 +67,7 @@ export async function downloadCardiacPdfReport(
     vessel_image_base64: screenshot,
   };
 
-  const response = await fetch("http://localhost:8000/generate-report", {
+  const response = await fetch(getApiUrl("/generate-report"), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

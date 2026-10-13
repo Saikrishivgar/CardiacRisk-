@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cardiac-risk-navigator-api
+    runtime: python
+    region: oregon
+    plan: starter # $7/mo always-on (or change to 'standard' $25/mo for 2GB RAM multi-concurrency)
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn api.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: ALLOWED_ORIGINS
+        value: http://localhost:3000

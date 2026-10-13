@@ -1,15 +1,18 @@
 import io
-from pathlib import Path
-from typing import Any, Dict, List, Optional
 import json
+import logging
+import os
 import uuid
 from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import docx
 import joblib
 import numpy as np
 import pandas as pd
-import shap
-import docx
 from pypdf import PdfReader
+import shap
 from fastapi import FastAPI, HTTPException, UploadFile, File, Response
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -17,27 +20,48 @@ from pydantic import BaseModel
 from .clinical_extractor import parse_clinical_text
 from .pdf_generator import generate_cardiac_pdf_report
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger("cardiac_risk_api")
+
 ROOT = Path(__file__).resolve().parents[1]
 MODEL_DIR = ROOT / "models"
-META = json.loads((ROOT / "reports" / "metrics.json").read_text())
+METRICS_PATH = ROOT / "reports" / "metrics.json"
 
-INPUT_COLUMNS: List[str] = META["input_columns"]
+try:
+    META = json.loads(METRICS_PATH.read_text())
+    INPUT_COLUMNS: List[str] = META["input_columns"]
+except Exception as e:
+    logger.error(f"Failed to load metrics metadata: {e}")
+    INPUT_COLUMNS = []
+
 FORBIDDEN_TARGETS = {"Cath", "CAD", "LAD", "LCX", "RCA"}
 
 # Model pipelines
-MODELS = {
-    "CAD": joblib.load(MODEL_DIR / "cath_model.joblib"),
-    "LAD": joblib.load(MODEL_DIR / "lad_model.joblib"),
-    "LCX": joblib.load(MODEL_DIR / "lcx_model.joblib"),
-    "RCA": joblib.load(MODEL_DIR / "rca_model.joblib"),
-    
-}
+try:
+    MODELS = {
+        "CAD": joblib.load(MODEL_DIR / "cath_model.joblib"),
+        "LAD": joblib.load(MODEL_DIR / "lad_model.joblib"),
+        "LCX": joblib.load(MODEL_DIR / "lcx_model.joblib"),
+        "RCA": joblib.load(MODEL_DIR / "rca_model.joblib"),
+    }
+    logger.info(f"Successfully loaded {len(MODELS)} trained ML models: {list(MODELS.keys())}")
+except Exception as e:
+    logger.error(f"Failed to load one or more ML models: {e}")
+    MODELS = {}
 
 # Pre-cache TreeExplainers at startup for fast inference
-EXPLAINERS = {
-    target: shap.TreeExplainer(model_pipe.named_steps["model"])
-    for target, model_pipe in MODELS.items()
-}
+try:
+    EXPLAINERS = {
+        target: shap.TreeExplainer(model_pipe.named_steps["model"])
+        for target, model_pipe in MODELS.items()
+    }
+    logger.info(f"Successfully initialized {len(EXPLAINERS)} SHAP TreeExplainers: {list(EXPLAINERS.keys())}")
+except Exception as e:
+    logger.error(f"Failed to initialize SHAP TreeExplainers: {e}")
+    EXPLAINERS = {}
 
 SHAP_SCALES = {
     "CAD": "probability",
@@ -151,30 +175,66 @@ class LoginRequest(BaseModel):
 
 app = FastAPI(title="Explainable 3D Cardiac Risk Navigator API")
 
-# Configure CORS for Next.js development origins
+# Configure CORS for production cloud deployment and local development
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS", "")
+custom_origins = [orig.strip() for orig in allowed_origins_env.split(",") if orig.strip()]
+default_origins = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+all_allowed_origins = list(set(default_origins + custom_origins))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=all_allowed_origins,
+    allow_origin_regex=r"^https:\/\/.*\.vercel\.app$",
     allow_credentials=True,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
     expose_headers=["Content-Disposition"],
 )
 
 
+@app.get("/")
+def root():
+    return {
+        "service": "Explainable 3D Cardiac Risk Navigator API",
+        "status": "online",
+        "health": "/health",
+        "docs": "/docs",
+        "version": "1.0.0",
+    }
+
+
 @app.get("/health")
 def health():
+    expected_models = {"CAD", "LAD", "LCX", "RCA"}
+    models_status = {target: target in MODELS for target in expected_models}
+    explainers_status = {target: target in EXPLAINERS for target in expected_models}
+
+    all_ready = (
+        all(models_status.values())
+        and all(explainers_status.values())
+        and len(INPUT_COLUMNS) > 0
+    )
+
+    if not all_ready:
+        logger.error(f"Health check failed: models={models_status}, explainers={explainers_status}")
+        raise HTTPException(
+            status_code=503,
+            detail={
+                "status": "unhealthy",
+                "message": "One or more machine learning models or explainers are not available.",
+                "models_loaded": models_status,
+                "explainers_loaded": explainers_status,
+            },
+        )
+
     return {
         "status": "ok",
-        "models_loaded": {
-            "CAD": "CAD" in MODELS,
-            "LAD": "LAD" in MODELS,
-            "LCX": "LCX" in MODELS,
-            "RCA": "RCA" in MODELS,
-        },
+        "service": "Explainable 3D Cardiac Risk Navigator API",
+        "models_loaded": models_status,
+        "explainers_loaded": explainers_status,
     }
 
 
