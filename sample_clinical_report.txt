@@ -1,0 +1,47 @@
+Patient Report
+
+Demographics:
+Age: 54
+Sex: Male
+Weight: 80.5
+Height: 175
+
+Vitals:
+BP: 120
+Heart Rate: 72
+
+Labs:
+Fasting Blood Sugar: 105
+Serum Creatinine: 1.1
+Triglycerides: 150
+LDL: 110
+HDL: 45
+BUN: 15
+ESR: 12
+Hemoglobin: 14.5
+K: 4.2
+Na: 138
+White Blood Cell Count: 7500
+Lymphocytes: 30
+Neutrophils: 60
+Platelets: 250
+
+Medical History:
+History of Diabetes: Yes
+Hypertension: No
+Current Smoker
+No history of CVA
+Thyroid Disease: Negative
+
+Echocardiography:
+Ejection Fraction: 55
+EF-TTE: 50
+
+Symptoms:
+Typical Chest Pain
+Denies shortness of breath
+Atypical angina
+
+Notes:
+Patient has atypical chest pain.
+Patient age: 54 years.

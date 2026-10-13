@@ -1,0 +1,15 @@
+pandas
+numpy
+scikit-learn
+xgboost
+shap
+openpyxl
+joblib
+fastapi
+uvicorn
+pydantic
+pypdf
+python-docx
+python-multipart
+reportlab
+pillow

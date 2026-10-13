@@ -1,0 +1,284 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Subtle selection styling */
+::selection {
+  background: #fecdd3;
+  color: #9f1239;
+}
+
+/* 3D Perspective Container */
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Cinematic Card Entrances */
+@keyframes cadEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(-35px, -25px, 0) scale(0.75) rotateY(-25deg) rotateX(8deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.06) rotateY(0deg) rotateX(0deg);
+  }
+  85% {
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg) rotateX(0deg);
+  }
+}
+
+@keyframes ladEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(35px, -25px, 0) scale(0.75) rotateY(25deg) rotateX(8deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.06) rotateY(0deg) rotateX(0deg);
+  }
+  85% {
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg) rotateX(0deg);
+  }
+}
+
+@keyframes lcxEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(-35px, 25px, 0) scale(0.75) rotateY(-20deg) rotateX(-8deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.06) rotateY(0deg) rotateX(0deg);
+  }
+  85% {
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg) rotateX(0deg);
+  }
+}
+
+@keyframes rcaEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(35px, 25px, 0) scale(0.75) rotateY(20deg) rotateX(-8deg);
+  }
+  65% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1.06) rotateY(0deg) rotateX(0deg);
+  }
+  85% {
+    transform: scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg) rotateX(0deg);
+  }
+}
+
+/* Card Entrance Glow (300-500ms flash) */
+@keyframes cardEntryGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  45% {
+    opacity: 0.9;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* Expanding Circular Pulse / Ripple from Center */
+@keyframes portalRipple {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.2);
+  }
+  60% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.4);
+  }
+}
+
+/* Connection Beam Draw */
+@keyframes beamDraw {
+  0% {
+    stroke-dashoffset: 200;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.85;
+  }
+  75% {
+    stroke-dashoffset: 0;
+    opacity: 0.6;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.18;
+  }
+}
+
+/* Realistic Medical Systolic/Diastolic Heartbeat */
+@keyframes heartbeatSoft {
+  0% {
+    transform: scale(1);
+  }
+  12% {
+    transform: scale(1.09);
+  }
+  22% {
+    transform: scale(0.98);
+  }
+  32% {
+    transform: scale(1.05);
+  }
+  44% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Faint Continuous Horizontal ECG Scroll */
+@keyframes ecgScroll {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-1000px, 0, 0);
+  }
+}
+
+/* Ambient Radial Glow Breathing */
+@keyframes ambientGlowPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.85;
+  }
+}
+
+/* Subtle Floating Medical Particle Drift */
+@keyframes floatParticleSlow {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translate3d(8px, -18px, 0) scale(1.12);
+    opacity: 0.75;
+  }
+}
+
+@keyframes floatParticleReverse {
+  0%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translate3d(-10px, 16px, 0) scale(0.9);
+    opacity: 0.8;
+  }
+}
+
+.animate-card-cad {
+  animation: cadEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-card-lad {
+  animation: ladEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-card-lcx {
+  animation: lcxEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-card-rca {
+  animation: rcaEntrance 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-entry-glow {
+  animation: cardEntryGlow 0.5s ease-out forwards;
+}
+
+.animate-portal-ripple {
+  animation: portalRipple 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-beam {
+  stroke-dasharray: 200;
+  animation: beamDraw 1.1s ease-out forwards;
+}
+
+.animate-heartbeat-soft {
+  animation: heartbeatSoft 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  transform-origin: center center;
+}
+
+.animate-ecg-scroll {
+  animation: ecgScroll 6s linear infinite !important;
+  will-change: transform;
+}
+
+.animate-ambient-glow {
+  animation: ambientGlowPulse 7s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+.animate-float-particle-1 {
+  animation: floatParticleSlow 9s ease-in-out infinite;
+}
+
+.animate-float-particle-2 {
+  animation: floatParticleReverse 11s ease-in-out infinite;
+}
+
+.animate-float-particle-3 {
+  animation: floatParticleSlow 13s ease-in-out infinite 2s;
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-portal-ripple,
+  .animate-pulse {
+    animation: none !important;
+    transform: none !important;
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "dataset": "Extension of Z-Alizadeh Sani Dataset",
+  "sheet": "Sheet 1 - Table 1",
+  "rows": 303,
+  "input_columns": [
+    "Age",
+    "Weight",
+    "Length",
+    "Sex",
+    "BMI",
+    "DM",
+    "HTN",
+    "Current Smoker",
+    "EX-Smoker",
+    "FH",
+    "Obesity",
+    "CRF",
+    "CVA",
+    "Airway disease",
+    "Thyroid Disease",
+    "CHF",
+    "DLP",
+    "BP",
+    "PR",
+    "Edema",
+    "Weak Peripheral Pulse",
+    "Lung rales",
+    "Systolic Murmur",
+    "Diastolic Murmur",
+    "Typical Chest Pain",
+    "Dyspnea",
+    "Function Class",
+    "Atypical",
+    "Nonanginal",
+    "Exertional CP",
+    "LowTH Ang",
+    "Q Wave",
+    "St Elevation",
+    "St Depression",
+    "Tinversion",
+    "LVH",
+    "Poor R Progression",
+    "BBB",
+    "FBS",
+    "CR",
+    "TG",
+    "LDL",
+    "HDL",
+    "BUN",
+    "ESR",
+    "HB",
+    "K",
+    "Na",
+    "WBC",
+    "Lymph",
+    "Neut",
+    "PLT",
+    "EF-TTE",
+    "Region RWMA",
+    "VHD"
+  ],
+  "excluded_from_input": [
+    "Cath",
+    "LAD",
+    "LCX",
+    "RCA"
+  ],
+  "targets": {
+    "CAD": "Cath == CAD",
+    "LAD": "LAD == Stenotic",
+    "LCX": "LCX == Stenotic",
+    "RCA": "RCA == Stenotic"
+  },
+  "selected_models": {
+    "Cath": "RandomForest",
+    "LAD": "RandomForest",
+    "LCX": "XGBoost",
+    "RCA": "RandomForest"
+  },
+  "metrics": [
+    {
+      "target": "Cath",
+      "model": "LogisticRegression",
+      "accuracy": 0.850983606557377,
+      "precision": 0.9230740835391998,
+      "recall": 0.86553911205074,
+      "f1": 0.8924014733229464,
+      "roc_auc": 0.9259309925520596
+    },
+    {
+      "target": "Cath",
+      "model": "RandomForest",
+      "accuracy": 0.87775956284153,
+      "precision": 0.9255798708184709,
+      "recall": 0.9028541226215644,
+      "f1": 0.9132185130626007,
+      "roc_auc": 0.9278551589769102
+    },
+    {
+      "target": "Cath",
+      "model": "XGBoost",
+      "accuracy": 0.8645901639344263,
+      "precision": 0.8816435261182832,
+      "recall": 0.9397463002114165,
+      "f1": 0.9086812292088308,
+      "roc_auc": 0.9160268899666985
+    },
+    {
+      "target": "LAD",
+      "model": "LogisticRegression",
+      "accuracy": 0.7360655737704918,
+      "precision": 0.7953436660444447,
+      "recall": 0.7403174603174604,
+      "f1": 0.7655317690355634,
+      "roc_auc": 0.807803663003663
+    },
+    {
+      "target": "LAD",
+      "model": "RandomForest",
+      "accuracy": 0.8088524590163935,
+      "precision": 0.8196566306322405,
+      "recall": 0.8647619047619047,
+      "f1": 0.8409711064640643,
+      "roc_auc": 0.8613406593406593
+    },
+    {
+      "target": "LAD",
+      "model": "XGBoost",
+      "accuracy": 0.7789071038251366,
+      "precision": 0.7971505687295162,
+      "recall": 0.8365079365079365,
+      "f1": 0.8157948207571977,
+      "roc_auc": 0.8409992673992674
+    },
+    {
+      "target": "LCX",
+      "model": "LogisticRegression",
+      "accuracy": 0.6169398907103825,
+      "precision": 0.5153796478384185,
+      "recall": 0.613768115942029,
+      "f1": 0.5583967988232008,
+      "roc_auc": 0.6495335008921966
+    },
+    {
+      "target": "LCX",
+      "model": "RandomForest",
+      "accuracy": 0.6830054644808742,
+      "precision": 0.5998571428571429,
+      "recall": 0.596376811594203,
+      "f1": 0.5973729917498914,
+      "roc_auc": 0.7298777037907472
+    },
+    {
+      "target": "LCX",
+      "model": "XGBoost",
+      "accuracy": 0.7028961748633881,
+      "precision": 0.6656818181818182,
+      "recall": 0.5130434782608695,
+      "f1": 0.5759052059052058,
+      "roc_auc": 0.7424829721025374
+    },
+    {
+      "target": "RCA",
+      "model": "LogisticRegression",
+      "accuracy": 0.6601639344262293,
+      "precision": 0.5449334875650665,
+      "recall": 0.6407114624505927,
+      "f1": 0.5807715786396758,
+      "roc_auc": 0.6960893179428649
+    },
+    {
+      "target": "RCA",
+      "model": "RandomForest",
+      "accuracy": 0.6534972677595628,
+      "precision": 0.5474798106377055,
+      "recall": 0.5517786561264822,
+      "f1": 0.5429896796340359,
+      "roc_auc": 0.7187465914010536
+    },
+    {
+      "target": "RCA",
+      "model": "XGBoost",
+      "accuracy": 0.6633333333333333,
+      "precision": 0.5959654380707012,
+      "recall": 0.44664031620553357,
+      "f1": 0.4975632529434537,
+      "roc_auc": 0.7000292366425089
+    }
+  ]
+}
